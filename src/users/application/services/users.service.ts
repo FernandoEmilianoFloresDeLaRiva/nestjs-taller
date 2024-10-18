@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpException,
   HttpStatus,
   Inject,
@@ -28,6 +29,12 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      const isExistingUser = await this._userRepository.getByEmail(
+        createUserDto.email,
+      );
+      if (isExistingUser) {
+        throw new ConflictException('El usuario ya es existente');
+      }
       const password = createUserDto.passwordUser;
       const passwordHash =
         await this._passwordHashService.hashedPassword(password);
@@ -40,7 +47,7 @@ export class UsersService {
     } catch (error) {
       throw new HttpException(
         error,
-        error.getStatus() ?? HttpStatus.INTERNAL_SERVER_ERROR,
+        error?.getStatus() ?? HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
