@@ -55,9 +55,9 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Delete(':id')
-  @HttpCode(HttpStatus.OK)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(id);
-  }
+  // @Delete(':id')
+  // @HttpCode(HttpStatus.OK)
+  // remove(@Param('id', ParseIntPipe) id: number) {
+  //   return this.usersService.remove(id);
+  // }
 }
