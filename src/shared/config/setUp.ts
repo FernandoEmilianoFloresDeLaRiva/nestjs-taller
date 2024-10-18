@@ -13,6 +13,7 @@ import {
   UpdateUserDto,
 } from 'src/users/infraestructure/ports/class-validator';
 import { CustomExceptionFilter } from './customException.filter';
+import { ResponseInterceptor } from './customResponse.interceptor';
 
 export const setUp = (app: INestApplication): INestApplication => {
   app.setGlobalPrefix('api');
@@ -23,6 +24,9 @@ export const setUp = (app: INestApplication): INestApplication => {
       forbidNonWhitelisted: true,
     }),
   );
+  app.useGlobalInterceptors(
+    new ResponseInterceptor()
+  )
   app.useGlobalFilters(
     //filter for errors
     new CustomExceptionFilter(),
